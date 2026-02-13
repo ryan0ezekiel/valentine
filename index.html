@@ -132,7 +132,7 @@
     </head>
 
     <body>
-        <audio id="bgm" loop>
+        <audio id="bgm" loop preload="auto">
             <source src="val.mp3" type="audio/mpeg" />
         </audio>
 
@@ -183,25 +183,29 @@
 
                 audio.volume = 0;
 
-                audio.play().then(() => {
-                    let vol = 0;
+                const playPromise = audio.play(); // try to play
 
-                    const fade = setInterval(() => {
-                        if (vol < 0.8) {
-                            vol += 0.02;
-                            audio.volume = vol;
-                        } else {
-                            clearInterval(fade);
-                        }
-                    }, 100);
-                });
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            // fade in
+                            let vol = 0;
+                            const fade = setInterval(() => {
+                                if (vol < 0.8) {
+                                    vol += 0.02;
+                                    audio.volume = vol;
+                                } else {
+                                    clearInterval(fade);
+                                }
+                            }, 100);
+                        })
+                        .catch((err) => {
+                            console.log("Audio blocked on mobile:", err);
+                        });
+                }
             }
 
             /* UNIVERSAL TOUCH + CLICK SUPPORT */
-
-            document.addEventListener("pointerdown", startExperience, {
-                once: true,
-            });
 
             /* HEART BURST */
 
@@ -296,6 +300,8 @@
             /* OPEN LETTER */
 
             envelope.addEventListener("pointerdown", () => {
+                startExperience(); // ✅ trigger audio inside the user gesture
+
                 envelope.style.display = "none";
 
                 letter.style.display = "flex";
