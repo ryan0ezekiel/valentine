@@ -299,7 +299,7 @@
 
             /* OPEN LETTER */
 
-            envelope.addEventListener("pointerdown", () => {
+            envelope.addEventListener("click", () => {
                 startExperience(); // ✅ trigger audio inside the user gesture
 
                 envelope.style.display = "none";
@@ -328,11 +328,11 @@
             /* support mouse AND touch */
 
             noBtn.addEventListener("pointerenter", moveNoButton);
-            noBtn.addEventListener("pointerdown", moveNoButton);
+            noBtn.addEventListener("click", moveNoButton);
 
             /* YES CLICK */
 
-            yesBtn.addEventListener("pointerdown", () => {
+            yesBtn.addEventListener("click", () => {
                 title.textContent = "Yyyaaaayyyy!!😍 I Love You Soooo Much";
 
                 catImg.src = "cat_dance.gif";
